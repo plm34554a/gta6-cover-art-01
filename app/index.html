@@ -3,21 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+<title>Vice Panels — Poster Cover Maker</title>
+<meta name="description" content="Turn your own photos into multi-panel poster cover art with a sunset or neon grade, and export a PNG in the common post sizes.">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+<header id="topbar">
+  <div id="brand">
+    <span id="brand-mark">VICE&nbsp;PANELS</span>
+    <span id="brand-sub">poster cover maker</span>
+  </div>
+  <p id="privacy-note">Your photos are read on this machine and never uploaded.</p>
+</header>
+
+<main id="studio">
+  <section id="stage-wrap">
+    <canvas id="stage" width="880" height="880"></canvas>
+    <p id="stage-hint">Click a panel to select it. Drag its photo to reposition, scroll to zoom.</p>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <aside id="controls">
+    <section id="photos-panel" class="control-block">
+      <h2>1 · Photos</h2>
+      <div class="row">
+        <label id="add-photos-btn" class="btn primary" for="photo-input">Add your photos</label>
+        <input id="photo-input" type="file" accept="image/*" multiple hidden>
+        <button id="sample-pier-btn" class="btn" type="button">Sample: pier</button>
+        <button id="sample-boulevard-btn" class="btn" type="button">Sample: boulevard</button>
+      </div>
+      <div id="photo-tray"></div>
+      <div class="row">
+        <button id="fill-panels-btn" class="btn" type="button">Fill every panel with the picked photo</button>
+        <button id="mosaic-btn" class="btn" type="button">Spread it across all panels as one picture</button>
+      </div>
+      <p class="hint">Pick a photo here, then click panels to place it — or click a panel first, then a photo.</p>
+    </section>
+
+    <section id="layout-panel" class="control-block">
+      <h2>2 · Collage layout</h2>
+      <div id="layout-buttons" class="btn-grid"></div>
+      <p id="layout-blurb" class="hint"></p>
+    </section>
+
+    <section id="panel-panel" class="control-block">
+      <h2>3 · Frame the panel</h2>
+      <p id="panel-label" class="hint">Panel 1 selected</p>
+      <label class="slider-row">Zoom
+        <input id="zoom-slider" type="range" min="1" max="4" step="0.01" value="1">
+      </label>
+      <label class="slider-row">Pan left / right
+        <input id="panx-slider" type="range" min="-0.6" max="0.6" step="0.005" value="0">
+      </label>
+      <label class="slider-row">Pan up / down
+        <input id="pany-slider" type="range" min="-0.6" max="0.6" step="0.005" value="0">
+      </label>
+      <button id="reset-view-btn" class="btn" type="button">Reset this panel's framing</button>
+    </section>
+
+    <section id="grade-panel" class="control-block">
+      <h2>4 · Colour grade</h2>
+      <div id="grade-buttons" class="btn-grid"></div>
+      <label class="slider-row">Grade strength
+        <input id="grade-slider" type="range" min="0" max="1" step="0.01" value="0.85">
+      </label>
+    </section>
+
+    <section id="caption-panel" class="control-block">
+      <h2>5 · Caption</h2>
+      <label class="field">Cover title
+        <input id="title-input" type="text" maxlength="42" value="MIDNIGHT HEAT">
+      </label>
+      <label class="field">Tagline
+        <input id="tagline-input" type="text" maxlength="48" value="EVERY SAINT HAS A PAST">
+      </label>
+      <label class="slider-row">Title size
+        <input id="title-size-slider" type="range" min="0.6" max="1.5" step="0.01" value="1">
+      </label>
+      <div class="row">
+        <button id="title-top-btn" class="btn" type="button">Title at top</button>
+        <button id="title-bottom-btn" class="btn primary" type="button">Title at bottom</button>
+      </div>
+    </section>
+
+    <section id="export-panel" class="control-block">
+      <h2>6 · Export the cover</h2>
+      <div id="size-buttons" class="btn-grid"></div>
+      <button id="export-btn" class="btn primary big" type="button">Download cover PNG</button>
+      <p id="export-note" class="hint">Exports exactly what the preview shows, at full post size.</p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<script type="module" src="src/editor.js"></script>
 </body>
 </html>
