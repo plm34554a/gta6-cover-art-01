@@ -181,15 +181,16 @@ function paintCaption(ctx, W, H, state) {
   }
   const lineH = size * 1.04;
   const tagSize = size * 0.30;
-  const blockH = lines.length * lineH + (tagline ? tagSize * 1.9 : 0);
+  const blockH = lines.length * lineH + (tagline ? tagSize * 1.75 : 0);
   let baseline = atTop ? margin + size * 0.92 : H - margin - blockH + size * 0.92;
+  let lastLineBaseline = baseline;
 
   if (tagline && atTop) {
     ctx.font = `${tagSize}px Anton, 'Arial Black', sans-serif`;
     try { ctx.letterSpacing = `${Math.round(tagSize * 0.32)}px`; } catch { /* older canvas */ }
     ctx.fillStyle = '#ffd166';
     ctx.fillText(tagline.toUpperCase(), margin + size * 0.02, baseline - size * 0.18);
-    baseline += tagSize * 1.55;
+    baseline += tagSize * 1.55 + size * 0.12;
     try { ctx.letterSpacing = '0px'; } catch { /* older canvas */ }
   }
   ctx.font = `${size}px Anton, 'Arial Black', sans-serif`;
@@ -207,16 +208,19 @@ function paintCaption(ctx, W, H, state) {
     fill.addColorStop(1, '#ffc98a');
     ctx.fillStyle = fill;
     ctx.fillText(line, margin, baseline);
+    lastLineBaseline = baseline;
     baseline += lineH;
   }
   if (tagline && !atTop) {
+    // Sit the tagline under the title's last line, inside the bottom margin.
+    const tagBaseline = lastLineBaseline + size * 0.30 + tagSize;
     ctx.font = `${tagSize}px Anton, 'Arial Black', sans-serif`;
     try { ctx.letterSpacing = `${Math.round(tagSize * 0.32)}px`; } catch { /* older canvas */ }
     ctx.lineWidth = tagSize * 0.14;
     ctx.strokeStyle = INK;
-    ctx.strokeText(tagline.toUpperCase(), margin + size * 0.02, baseline + tagSize * 0.55);
+    ctx.strokeText(tagline.toUpperCase(), margin + size * 0.02, tagBaseline);
     ctx.fillStyle = '#ffd166';
-    ctx.fillText(tagline.toUpperCase(), margin + size * 0.02, baseline + tagSize * 0.55);
+    ctx.fillText(tagline.toUpperCase(), margin + size * 0.02, tagBaseline);
     try { ctx.letterSpacing = '0px'; } catch { /* older canvas */ }
   }
   ctx.restore();
